@@ -192,6 +192,5 @@ setTimeout(
     6000
 )
 
-var public=null;
-var publi1c=1;
 // testCase.testRegister(socket);
+
