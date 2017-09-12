@@ -263,6 +263,7 @@ function handleLoginResult(feedback) {
             // 打开
             $("#log_modal").css("display", "block");
             $('#system_menu').html(temp);
+
         });
     } else if (feedback.errorCode == 1) {
         // 登录失败

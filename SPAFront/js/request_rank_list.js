@@ -1,5 +1,9 @@
 $('#router_rank').on('click', function(e){
     e.preventDefault();
-    socket.emit('rankRequest');
+    if(!userInfo){
+        alert('请登录后查看');
+    }else{
+        socket.emit('rankRequest');
+    }
 });
 
