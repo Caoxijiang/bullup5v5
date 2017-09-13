@@ -723,7 +723,7 @@
 
 	<script>
     $().ready(function(){
-	  var temp = douniu.loadSwigView("./swig_menu.html", null);
+	  var temp = bullup.loadSwigView("./swig_menu.html", null);
 	  $('#system_menu').html(temp);
 
 		$('.carousel.carousel-slider').carousel({
@@ -763,7 +763,7 @@
 			$("#first_name").val(clasvlue);
 			$('.ois').addClass('active');
 			$('.chip').eq(iox).addClass("selected").siblings().removeClass('selected');
-		})
+		});
 
 		//银行卡号输入js配置
 		$(document).ready(function(){

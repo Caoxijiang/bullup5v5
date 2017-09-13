@@ -92,12 +92,12 @@ socket.on('teamInfoUpdate', function (data) {
     roomInfo = data;
     //console.log(JSON.stringify(roomInfo));
     //更新房间信息
-    var roomInfoFrameHtml = douniu.loadSwigView('swig_myroom_frame.html', {});
-    var roomInfoHtml = douniu.loadSwigView('swig_myroom_info.html', {
+    var roomInfoFrameHtml = bullup.loadSwigView('swig_myroom_frame.html', {});
+    var roomInfoHtml = bullup.loadSwigView('swig_myroom_info.html', {
         room: roomInfo
     });
     var teamates = roomInfo.participants;
-    var teamatesHtml = douniu.loadSwigView('swig_myroom_teamate.html', {
+    var teamatesHtml = bullup.loadSwigView('swig_myroom_teamate.html', {
         teamates : teamates
     });
     $('.content').html(roomInfoFrameHtml);
@@ -126,7 +126,7 @@ socket.on('teamInfoUpdate', function (data) {
 
     // {"name":"嵇昊雨","userId":30,"avatarId":1,"wealth":0,"online":true,"status":"IDLE","friendList":{"郭景明":{"name":"郭景明","userId":29,"avatarId":1,"online":"true","status":"idle"},"嵇昊雨":{"name":"嵇昊雨","userId":30,"avatarId":1,"online":"true","status":"idle"}},"relationMap":{"currentTeamId":null,"currentGameId":null},"strength":{"kda":"0.0","averageGoldEarned":0,"averageTurretsKilled":0,"averageDamage":0,"averageDamageTaken":0,"averageHeal":0,"score":2000}}
 
-    //var temp = douniu.loadSwigView("./swig_menu.html", { logged_user: userInfo });
+    //var temp = bullup.loadSwigView("./swig_menu.html", { logged_user: userInfo });
 });
 
 socket.on('teamForm', function () {
@@ -141,7 +141,7 @@ socket.on('battleRequest', function (battleRequest) {
 socket.on('battleInfo', function (battle) {
     battleInfo = battle;
     console.log(JSON.stringify(battleInfo));
-    var battleRoomHtml = douniu.loadSwigView("./swig_fight.html", {
+    var battleRoomHtml = bullup.loadSwigView("./swig_fight.html", {
         blueSide: battleInfo.blueSide,
         redSide: battleInfo.redSide,
     });
@@ -198,7 +198,7 @@ socket.on('battleResult', function(resultPacket){
     }
     battleResultData.wealth_change = resultPacket.rewardAmount;
     console.log(JSON.stringify(battleResultData));
-    var battleResHtml = douniu.loadSwigView('./swig_battleres.html', {
+    var battleResHtml = bullup.loadSwigView('./swig_battleres.html', {
         battle_res: battleResultData
     });
     //页面跳转到结果详情页
@@ -227,7 +227,7 @@ socket.on('battleResult', function(resultPacket){
                 }
             ]
         };
-		douniu.loadTemplateIntoTarget('swig_starter.html', starter_data, 'main-view');
+		bullup.loadTemplateIntoTarget('swig_starter.html', starter_data, 'main-view');
 	});
 });
 
@@ -249,7 +249,7 @@ function handleLoginResult(feedback) {
         // console.log("User info");
         // console.log(userInfo);
         //跳转
-        var temp = douniu.loadSwigView("./swig_menu.html", { logged_user: userInfo });
+        var temp = bullup.loadSwigView("./swig_menu.html", { logged_user: userInfo });
         // 关闭
         $("#log_modal").css("display", "none");
         $('#system_menu').html(temp);
@@ -259,7 +259,7 @@ function handleLoginResult(feedback) {
 		    alert('登出成功!');
             e.preventDefault();
             userInfo = null;
-            var temp = douniu.loadSwigView("./swig_menu.html", null);
+            var temp = bullup.loadSwigView("./swig_menu.html", null);
             // 打开
             $("#log_modal").css("display", "block");
             $('#system_menu').html(temp);
@@ -291,7 +291,7 @@ function handleFeedback(feedback) {
 function handleRankList(rankList){
     var strengthRankList = rankList.strengthRankList;
     var wealthRankList = rankList.wealthRankList;
-    var rank_list = douniu.loadSwigView('swig_rank.html', {
+    var rank_list = bullup.loadSwigView('swig_rank.html', {
         strengthRankList: strengthRankList.rankList,
         wealthRankList: wealthRankList.rankList,
         strengthUserInfo: strengthRankList.userRankInfo,
@@ -327,14 +327,14 @@ function handleRoomEstablishmentResult(feedback){
         return;
     }
     roomInfo = feedback.extension;
-    var roomInfoFrameHtml = douniu.loadSwigView('swig_myroom_frame.html', {});
-    var roomInfoHtml = douniu.loadSwigView('swig_myroom_info.html', {
+    var roomInfoFrameHtml = bullup.loadSwigView('swig_myroom_frame.html', {});
+    var roomInfoHtml = bullup.loadSwigView('swig_myroom_info.html', {
         room: roomInfo
     });
     var teamates = [];
     var captain = roomInfo.captain;
     teamates.push(captain);
-    var teamatesHtml = douniu.loadSwigView('swig_myroom_teamate.html', {
+    var teamatesHtml = bullup.loadSwigView('swig_myroom_teamate.html', {
         teamates : teamates
     });
     $('.content').html(roomInfoFrameHtml);
@@ -368,7 +368,7 @@ function handleTeamEstablishResult(feedback){
         for(var team in formedTeams){
             formedTeams[team].participantCount = formedTeams[team].participants.length;
         }
-        var battle_teams = douniu.loadSwigView('swig_battle.html', {
+        var battle_teams = bullup.loadSwigView('swig_battle.html', {
 			teams: formedTeams
 		});
         //页面跳转到对战大厅
@@ -389,7 +389,7 @@ function handleTeamEstablishResult(feedback){
                 }
             }
 
-            var teamDetailsHtml = douniu.loadSwigView('swig_team_detail.html', {
+            var teamDetailsHtml = bullup.loadSwigView('swig_team_detail.html', {
                 team: room
             });
             $('#team_detail_container').html(teamDetailsHtml);
@@ -411,7 +411,7 @@ function handleTeamEstablishResult(feedback){
 	 		currentPage: 1
 		};
 		//
-		var pagination = douniu.loadSwigView('swig_pagination.html', pages);
+		var pagination = bullup.loadSwigView('swig_pagination.html', pages);
 		//		console.log(pagination);
 		$('#pagination-holder').html(pagination);
 
@@ -429,7 +429,7 @@ function handleRefreshFormedBattleRoomResult(feedback){
         for(var team in formedTeams){
             formedTeams[team].participantCount = formedTeams[team].participants.length;
         }
-        var battle_teams = douniu.loadSwigView('swig_battle.html', {
+        var battle_teams = bullup.loadSwigView('swig_battle.html', {
 			teams: formedTeams
 		});
         //页面跳转到对战大厅
@@ -449,7 +449,7 @@ function handleRefreshFormedBattleRoomResult(feedback){
                     break;
                 }
             }
-            var teamDetailsHtml = douniu.loadSwigView('swig_team_detail.html', {
+            var teamDetailsHtml = bullup.loadSwigView('swig_team_detail.html', {
                 team: room
             });
             $('#team_detail_container').html(teamDetailsHtml);
@@ -471,7 +471,7 @@ function handleRefreshFormedBattleRoomResult(feedback){
 	 		currentPage: 1
 		};
 		//
-		var pagination = douniu.loadSwigView('swig_pagination.html', pages);
+		var pagination = bullup.loadSwigView('swig_pagination.html', pages);
 		//		console.log(pagination);
 		$('#pagination-holder').html(pagination);
 
@@ -496,7 +496,7 @@ function  handlePersonalCenterResult(feedback){
         console.log('data='+JSON.stringify(data));
         //radar.setData(data);
 
-        var personalCenterHtml = douniu.loadSwigView('./swig_personal_basic.html',{
+        var personalCenterHtml = bullup.loadSwigView('./swig_personal_basic.html',{
             player:{
                name:data.UserlolNickname,
                server:data.UserlolArea,
