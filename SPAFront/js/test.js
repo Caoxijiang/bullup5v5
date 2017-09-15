@@ -21,3 +21,4 @@ drawRadarWithData(my_data, component_data, 'teams-radar-chart');
 
 
 
+

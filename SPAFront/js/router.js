@@ -7,7 +7,7 @@ $().ready(function(){
 	//	test data
 	//==============
 	$('#router_test_page').click(function () {
-		$.getScript('/js/jiaz.js');
+		$.getScript('/js/test.js');
 	})
 	$(".home_gr").click(function () {
 		$.getScript('/js/leidt.js');
