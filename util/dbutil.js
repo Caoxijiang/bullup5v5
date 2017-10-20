@@ -596,7 +596,7 @@ exports.addUser = function(userInfo, callback) {
         },
         function(userInfo, callback){
             connection.query('insert into `bullup_wealth` (user_id, bullup_currency_type, bullup_currency_amount) values (?, ?, ?)', [userInfo.userId, 'score', '300'], function(err, row){
-                userInfo.wealth = 300;
+                userInfo.wealth = 10;
                 callback(null, userInfo);
             });
         },
@@ -655,7 +655,7 @@ exports.findFriendListByUserId = function(userId, callback) {
         async.eachSeries(rows, function(row, errCb){
             exports.findUserById(row.friend_user_id, function(user) {
                 //调用socketProxy中的方法，判断用户是否在线
-                if (socketProxy.isUserOnline(user.user_id)) {
+                //if (socketProxy.isUserOnline(user.user_id)) {
                     //返回true时
                     friendList[user.user_nickname] = {
                         name: user.user_nickname,
@@ -664,16 +664,16 @@ exports.findFriendListByUserId = function(userId, callback) {
                         online: 'true',
                         status: "idle"
                     };
-                }else{
-                    //返回false时
-                    friendList[user.user_nickname] = {
-                        name: user.user_nickname,
-                        userId: user.user_id,
-                        avatarId: user.icon_id,
-                        online: 'false',
-                        status: "idle"
-                    };
-                }
+                // }else{
+                //     //返回false时
+                //     friendList[user.user_nickname] = {
+                //         name: user.user_nickname,
+                //         userId: user.user_id,
+                //         avatarId: user.icon_id,
+                //         online: 'false',
+                //         status: "idle"
+                //     };
+                // }
                 
                 errCb();
             })
@@ -729,25 +729,24 @@ exports.searchCashFlow = function(data,callback){
  * @param userId
  */
 exports.userRecharge = function(data, callback) {
-    var tempMoney = (data.money) / 100;
     async.parallel([
         function(done) {
-            connection.query('update bullup_wealth set bullup_currency_amount=bullup_currency_amount+? where user_id=?', [tempMoney,data.userId], function (err, results){
+            connection.query('update bullup_wealth set bullup_currency_amount=bullup_currency_amount+? where user_id=?', [data.money,data.userId], function (err, results){
                 if (err) throw err;
                 done(err,results);
             });
         },
         function(done){
-            connection.query('insert into bullup_payment_history(user_id,bullup_bill_value,bullup_bill_type) values (?,?,?)', [data.userId,tempMoney,data.currency], function (err, results){
+            connection.query('insert into bullup_payment_history(user_id, bullup_payment_account_id, bullup_bill_value,bullup_bill_type) values (?,?,?,?)', [data.userId, 0, data.money, data.currency], function (err, results){
                 if (err) throw err;
                 done(err,results);
             });
         }
     ],function(err,results){
         if(!err)
-            callback(null,results);
+            callback(results);
         else
-            callback(err,null);
+            callback(null);
     });
     
 }
@@ -1191,6 +1190,39 @@ exports.insertBankInfo = function(bankInfo, callback) {
         else
             callback(err,null);
     });
+    
+}
+
+exports.writeBattleRecord = function(battle){
+    
+    var competitionType = battle.blueSide.gameMode;
+    var competitionId = 0;
+    var battleName = battle.battleName;
+    var battleMap = battle.blueSide.mapSelection;
+    var battleBet = battle.blueSide.rewardAmount;
+    var teamNum = battle.blueSide.paticipants.length;
+    var redNames = "";
+    var blueNames = "";
+    var time = new Date().format("yyyy-MM-dd HH:mm:ss"); 
+    var duration = 0;
+    var result = "";
+    if(battle.blueWin){
+        result = "蓝方赢";
+    }else{
+        result = "红方赢";
+    }
+    for(var index in battle.blueSide.paticipants){
+        blueNames += ",";
+        blueNames += battle.blueSide.paticipants[index].name;
+    }
+    blueNames = blueNames.substr(1);
+
+    for(var index in battle.redSide.paticipants){
+        redNames += ",";
+        redNames += battle.redSide.paticipants[index].name;
+    }
+    redNames = redNames.substr(1);
+
     
 }
 
